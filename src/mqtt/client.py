@@ -37,6 +37,7 @@ class MQTTClient:
 
     def start(self) -> None:
         logger.info("[MQTT] Connecting to %s:%s …", settings.MQTT_BROKER, settings.MQTT_PORT)
+        self._client.reconnect_delay_set(min_delay=5, max_delay=60)
         self._client.connect(settings.MQTT_BROKER, settings.MQTT_PORT, keepalive=60)
         self._thread = threading.Thread(target=self._client.loop_forever, daemon=True)
         self._thread.start()
